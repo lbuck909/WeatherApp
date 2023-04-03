@@ -7,7 +7,20 @@ body{
  font-family: Philosopher, sans-serif;
  
 }
- 
+
+/* Main column */
+.main {
+  flex: 60%;
+  background-color: white;
+  padding: 10px;
+}
+.box {
+  background-color: #8b4b4b;
+  border: 10px;
+  border-color: black;
+  width: 100%;
+  padding: 20px;
+}
 .input{
   text-align: center;
   margin: 100px 0;
@@ -46,14 +59,21 @@ input[type="button"]{
 }
 .flex-container {
   display: flex;
-  background-color: none;
+  height: 600px;
+  flex-wrap: nowrap;
+  align-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  
 }
 .flex-container > div {
   background-color: blue;
   margin: 10px;
-  padding: 10px;
-  width: 800px;
-  height: 150px;
+  padding: 0;
+  width: 200px;
+  height: 200px;
+  line-height: 75px;
   font-size: 20px;
   font-family: "Philosopher";
   color: white;
