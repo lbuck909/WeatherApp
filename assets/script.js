@@ -6,25 +6,48 @@ var APIUrl = "https://api.openweathermap.org";
 var searchbtnEl = document.querySelector('#citySubmit');
 var cityInputEl = document.querySelector('#cityInput')
 var currentWeatherEl = document.querySelector('#currentWeather')
-var weatherCardEl = document.querySelector('#weatherCard')
+var weathercardEl = document.querySelector('#weatherCard')
 var historyEl = document.querySelector('#history')
 var currentTempEl = document.querySelector('#currentTemp')
 
+function getWeather(weather) {
+  console.log (weather);
+
+// create h2 for name of city
+var city = document.createElement("h2");
+cityName.textContent = weather.name;
+resultsContainer.append(cityName);
+// create <p> for humidity, wind,description, temp, uv 
+var temp = document.createElement("p");
+temp.textContent = "Temp: " + weather.main.temp + " F";
+resultsContainer.append(temp);
+
+var humidity = document.createElement("p");
+humidity.textContent = "humidity: " + weather.main.humidity + " %";
+resultsContainer.append(humidity);
+
+var wind = document.createElement("p");
+wind.textContent = "wind: " + weather.wind.speed + " mph, " + weather.wind.deg + "°";
+resultsContainer.append(wind);
+}
 var CityConditions = [];
 // Inital data when user loads page
-getWeatherData()
-function getWeatherData() {
+getForecastData()
+function getForecastData() {
   navigator.geolocation.getCurrentPosition((success) => {
     let {latitude, longitude } = success.coords;
 
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=imperial&appid=${APIkey}`).then(res => res.json()).then(data => {
       console.log(data)
-      showWeatherData(data);
+      showForecastData(data);
     })
   })
 }
-function showWeatherData (data){
-  
+function showForecastData (data){
+  let{pressure, wind, humidity} = data.current;
+ 
+  currentWeatherEl.innerHTML = `<div class="box" style="height:200px;" id="currentWeather"></div>
+  </div>`
 }
 //function startPage() {
   //initalCityData();
