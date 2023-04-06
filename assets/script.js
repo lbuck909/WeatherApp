@@ -12,6 +12,20 @@ var currentTempEl = document.querySelector('#currentTemp')
 
 var CityConditions = [];
 // Inital data when user loads page
+getWeatherData()
+function getWeatherData() {
+  navigator.geolocation.getCurrentPosition((success) => {
+    let {latitude, longitude } = success.coords;
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=imperial&appid=${APIkey}`).then(res => res.json()).then(data => {
+      console.log(data)
+      showWeatherData(data);
+    })
+  })
+}
+function showWeatherData (data){
+  
+}
 //function startPage() {
   //initalCityData();
 //}
