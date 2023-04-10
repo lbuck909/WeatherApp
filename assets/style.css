@@ -61,15 +61,16 @@ input[type="button"]{
 * {
   box-sizing: border-box;
 }
-.flex-container {
-  display: flex;
+  .flex-container {
+  order: 5;
+    display: flex;
   height: 600px;
   width: 1000px;
   flex-wrap: nowrap;
   align-content: center;
   flex-direction: row;
   justify-content: space-evenly;
-  align-items: flex-start;
+  align-items: flex-start;//
   
 }
 .flex-container > div {
