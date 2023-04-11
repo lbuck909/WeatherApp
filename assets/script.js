@@ -11,6 +11,7 @@ var weatherCardEl = document.querySelector("#weatherCard");
 var historyEl = document.querySelector("#history");
 var currentTempEl = document.querySelector("#currentTemp");
 var searchHistory = localStorage.getItem("searchHistory") || [];
+var resetBtnEl = document.querySelector('resetBtn')
 
 function getWeather(weather) {
   console.log(weather);
@@ -56,7 +57,7 @@ function getFivedayForecast(city) {
     <h5 class="card-title">${forecast.dt_txt}</h5>
     <p class="card-text">humidity: ${forecast.main.humidity}</p>
     <p class="card-text">wind: ${forecast.wind.speed}</p>
-    <p class="card-text">temp: ${forecast.main.valNum}</p>
+    <p class="card-text">temp: ${temperature(forecast.main.valNum)}</p>
   </div>
 </div>
         `
@@ -144,9 +145,14 @@ function startPage() {
   }
 }
 //when the user clicks btn current city; use Jquery here
+
   $(document).on("click", ".list-weatherCardEL-item", function (event) {
   event.preventDefault();
 
   var city = $(this).attr("attr");
   returnApiFetch(city);
 });
+
+function resetBtn() {
+  document.getElementById("resetBtn").reset();
+}
