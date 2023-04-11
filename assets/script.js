@@ -16,7 +16,7 @@ function getWeather(weather) {
   console.log(weather);
 
   // create h2 for name of city
-  var city = document.createElement("h2");
+  var cityName = document.createElement("h2");
   cityName.textContent = weather.name;
   resultsContainer.append(cityName);
   // create <p> for humidity, wind,description, temp, uv
@@ -62,32 +62,53 @@ function getFivedayForecast(city) {
     .then((data) => {
       console.log(data);
 
-      var forecasts = data.list.map((forecast) => {
-        return {
-          temperature: forecast.main.temp,
-          dateTime: forecast.dt_txt,
-          // add more fields here per assignment instructions
-        };
-      });
+  //    var forecasts = data.list.map((forecast) => {
+    //    return (`
+    function temperature(valNum) {
+      valNum = parseFloat(valNum);
+      document.getElementById("outputFahrenheit").innerHTML=((valNum-273.15)*1.8)+32;
+    }
+    var forecasts = ""
+    for(let i=0;i<data.list.length;i=i+8){
+      var forecast = data.list[i]
+      forecasts += `
+        <div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">${forecast.dt_txt}</h5>
+    <p class="card-text">humidity: ${forecast.main.humidity}</p>
+    <p class="card-text">wind: ${forecast.wind.speed}</p>
+    <p class="card-text">temp: ${forecast.main.valNum}</p>
+  </div>
+</div>
+        `
+    }
+        // {\\
+        //   temperature: forecast.main.temp,
+        //   dateTime: forecast.dt_txt,
+        //   date: forecast.main.date,
+        
+        // };
+    //  });
+forecastEl.innerHTML = forecasts;
+      // forecasts.forEach((forecast) => {
+      //   var listItemTemp = document.createElement("li");
+      //   listItemTemp.textContent = forecast.temperature;
 
-      forecasts.forEach((forecast) => {
-        var listItemTemp = document.createElement("li");
-        listItemTemp.textContent = forecast.temperature;
+      //   var listItemDate = document.createElement("li");
+      //   listItemDate.textContent = forecast.dateTime;
 
-        var listItemDate = document.createElement("li");
-        listItemDate.textContent = forecast.dateTime;
+      //   var listItemWind = document.createElement("li");
+      //   listItemWind.textContent = forecast.dateWind;
 
-        var listItemWind = document.createElement("li");
-        listItemWind.textContent = forecast.dateWind;
+      //   var listItemHumidity = document.createElement("li");
+      //   listItemHumidity.textContent = forecast.dateHumidity;
 
-        var listItemHumidity = document.createElement("li");
-        listItemHumidity.textContent = forecast.dateHumidity;
-
-        forecastEl.appendChild(listItemDate);
-        forecastEl.appendChild(listItemTemp);
-        forecastEl.appendChild(listItemWind);
-        forecastEl.appendChild(listItemHumidity);
-      });
+        // forecastEl.appendChild(listItemDate);
+        // forecastEl.appendChild(listItemTemp);
+        // forecastEl.appendChild(listItemWind);
+        // forecastEl.appendChild(listItemHumidity);
+    //  });
 
       searchHistory.push(city);
 
@@ -157,9 +178,9 @@ function startPage() {
   }
 }
 //when the user clicks btn current city; use Jquery here
-  $(document).on("click", ".list-weatherCardEL-item", function (event) {
-  event.preventDefault();
+//   $(document).on("click", ".list-weatherCardEL-item", function (event) {
+//   event.preventDefault();
 
-  var city = $(this).attr("attr");
-  returnApiFetch(city);
-});
+//   var city = $(this).attr("attr");
+//   returnApiFetch(city);
+// });
