@@ -19,7 +19,7 @@ function getWeather(weather) {
   var cityName = document.createElement("h2");
   cityName.textContent = weather.name;
   resultsContainer.append(cityName);
-  // create <p> for humidity, wind,description, temp, uv
+  // create <p> for humidity, wind,description, temp, 
   var temp = document.createElement("p");
   temp.textContent = "Temp: " + weather.main.temp + " F";
   resultsContainer.append(temp);
@@ -34,24 +34,6 @@ function getWeather(weather) {
   resultsContainer.append(wind);
 }
 var CityConditions = [];
-// Inital data when user loads page
-// getForecastData()
-// function getForecastData() {
-//   navigator.geolocation.getCurrentPosition((success) => {
-//     let {latitude, longitude } = success.coords;
-
-//     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&exclude=hourly,minutely&units=imperial&appid=${APIkey}`).then(res => res.json()).then(data => {
-//       console.log(data)
-//       showForecastData(data);
-//     })
-//   })
-// }
-// function showForecastData (data){
-//   let{pressure, wind, humidity} = data.current;
-
-//   currentWeatherEl.innerHTML = `<div class="box" style="height:200px;" id="currentWeather"></div>
-//   </div>`
-// }
 
 var forecastEl = document.querySelector("#current-weather-forecast");
 function getFivedayForecast(city) {
@@ -61,13 +43,9 @@ function getFivedayForecast(city) {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-
-  //    var forecasts = data.list.map((forecast) => {
-    //    return (`
-    function temperature(valNum) {
-      valNum = parseFloat(valNum);
-      document.getElementById("outputFahrenheit").innerHTML=((valNum-273.15)*1.8)+32;
-    }
+      
+      
+    
     var forecasts = ""
     for(let i=0;i<data.list.length;i=i+8){
       var forecast = data.list[i]
@@ -83,14 +61,7 @@ function getFivedayForecast(city) {
 </div>
         `
     }
-        // {\\
-        //   temperature: forecast.main.temp,
-        //   dateTime: forecast.dt_txt,
-        //   date: forecast.main.date,
-        
-        // };
-    //  });
-forecastEl.innerHTML = forecasts;
+     forecastEl.innerHTML = forecasts;
       // forecasts.forEach((forecast) => {
       //   var listItemTemp = document.createElement("li");
       //   listItemTemp.textContent = forecast.temperature;
@@ -119,6 +90,12 @@ forecastEl.innerHTML = forecasts;
         historyEl.appendChild(listItem);
       });
     });
+
+    function temperature(valNum) {
+      valNum = parseFloat(valNum);
+      return ((valNum-273.15)*1.8)+32;
+    }
+
 }
 function SaveDataToLocalStorage(data)
 {
@@ -128,11 +105,7 @@ function SaveDataToLocalStorage(data)
         alert(a);  
     localStorage.setItem('session', JSON.stringify(a));
 }
-// check if we have search hsiotry, load it we do
 
-// add new cities to search history
-
-// dispaly search history on page
 
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -141,14 +114,7 @@ searchForm.addEventListener("submit", (event) => {
   getFivedayForecast(city);
   cityInputEl.value = "";
 });
-//function statPage() {
-//initalCityData();
-//}
 
-// Uses localStorage to store persistent data//
-
-//console.log('cityInput', data);
-// Create if & then conditional statement to weather API data//
 var APIUrl;
 if (location.protocol === "https:") {
   APIUrl = "https://api.openweathermap.org";
@@ -178,9 +144,9 @@ function startPage() {
   }
 }
 //when the user clicks btn current city; use Jquery here
-//   $(document).on("click", ".list-weatherCardEL-item", function (event) {
-//   event.preventDefault();
+  $(document).on("click", ".list-weatherCardEL-item", function (event) {
+  event.preventDefault();
 
-//   var city = $(this).attr("attr");
-//   returnApiFetch(city);
-// });
+  var city = $(this).attr("attr");
+  returnApiFetch(city);
+});
