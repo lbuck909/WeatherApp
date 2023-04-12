@@ -95,6 +95,8 @@ function getFivedayForecast(city) {
     function temperature(valNum) {
       valNum = parseFloat(valNum);
       return ((valNum-273.15)*1.8)+32;
+
+      // console.log(temperature);
     }
 
 }
@@ -120,7 +122,7 @@ var APIUrl;
 if (location.protocol === "https:") {
   APIUrl = "https://api.openweathermap.org";
 } else {
-  APIUrl = '"https://api.openweathermap.org";';
+  APIUrl = "https://api.openweathermap.org";
 }
 // from criteria:  search for a city and receive current & future weather conditions with a search history shown
 function startPage() {
