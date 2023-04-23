@@ -12,6 +12,25 @@ var historyEl = document.querySelector("#history");
 var currentTempEl = document.querySelector("#currentTemp");
 var searchHistory = localStorage.getItem("searchHistory") || [];
 var resetBtnEl = document.querySelector('resetBtn')
+var cities = JSON.parse(localStorage.getItem("cities")) || [];
+console.log(cities)
+for (let i = 0; i < cities.length; i++) {
+  var button = document.createElement("button");
+  button.addEventListener("click",function(){
+    getCurrentWeather(cities[i])
+  })
+  
+}
+function addHistoryItem(city){
+if (city && !cities.includes(city)) {
+  cities.push(city)
+  localStorage.setItem("history",JSON.stringify(cities))
+  var button = document.createElement("button");
+  button.addEventListener("click",function(){
+    getCurrentWeather(city)
+  })
+}
+}
 
 function getWeather(weather) {
   console.log(weather);
@@ -19,28 +38,39 @@ function getWeather(weather) {
   // create h2 for name of city
   var cityName = document.createElement("h2");
   cityName.textContent = weather.name;
-  resultsContainer.append(cityName);
+  currentWeatherEl.append(cityName);
   // create <p> for humidity, wind,description, temp, 
   var temp = document.createElement("p");
   temp.textContent = "Temp: " + weather.main.temp + " F";
-  resultsContainer.append(temp);
+  currentWeatherEl.append(temp);
 
   var humidity = document.createElement("p");
   humidity.textContent = "humidity: " + weather.main.humidity + " %";
-  resultsContainer.append(humidity);
+  currentWeatherEl.append(humidity);
 
   var wind = document.createElement("p");
   wind.textContent =
-    "wind: " + weather.wind.speed + " mph, " + weather.wind.deg + "°";
-  resultsContainer.append(wind);
+    "wind: " + weather.wind.speed + "mph";
+  currentWeatherEl.append(wind);
+}
+function getCurrentWeather(city){
+  var APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${APIkey}`; 
+  fetch(APIUrl)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      getWeather(data)
+      getFivedayForecast(city)
+      addHistoryItem()
+    })      
 }
 var CityConditions = [];
 
 var forecastEl = document.querySelector("#current-weather-forecast");
 function getFivedayForecast(city) {
-  var apiURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${APIkey}`;
+  var APIUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=imperial&appid=${APIkey}`;
 
-  fetch(apiURL)
+  fetch(APIUrl)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -52,12 +82,12 @@ function getFivedayForecast(city) {
       var forecast = data.list[i]
       forecasts += `
         <div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
+  <img src="http://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png" class="card-img-top" alt="icon">
   <div class="card-body">
-    <h5 class="card-title">${forecast.dt_txt}</h5>
+    <h5 class="card-title">${forecast.dt_txt.slice(0,10)}</h5>
     <p class="card-text">humidity: ${forecast.main.humidity}</p>
     <p class="card-text">wind: ${forecast.wind.speed}</p>
-    <p class="card-text">temp: ${temperature(forecast.main.valNum)}</p>
+    <p class="card-text">temp: ${forecast.main.temp}</p>
   </div>
 </div>
         `
@@ -114,7 +144,7 @@ searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   var city = cityInputEl.value;
   // getWeather(city);
-  getFivedayForecast(city);
+  getCurrentWeather(city);
   cityInputEl.value = "";
 });
 
