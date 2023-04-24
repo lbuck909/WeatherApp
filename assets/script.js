@@ -11,35 +11,34 @@ var weatherCardEl = document.querySelector("#weatherCard");
 var historyEl = document.querySelector("#history");
 var currentTempEl = document.querySelector("#currentTemp");
 var searchHistory = localStorage.getItem("searchHistory") || [];
-var resetBtnEl = document.querySelector('resetBtn')
+var resetBtnEl = document.querySelector("resetBtn");
 var cities = JSON.parse(localStorage.getItem("cities")) || [];
-console.log(cities)
+console.log(cities);
 for (let i = 0; i < cities.length; i++) {
   var button = document.createElement("button");
-  button.addEventListener("click",function(){
-    getCurrentWeather(cities[i])
-  })
-  
+  button.addEventListener("click", function () {
+    getCurrentWeather(cities[i]);
+  });
 }
-function addHistoryItem(city){
-if (city && !cities.includes(city)) {
-  cities.push(city)
-  localStorage.setItem("history",JSON.stringify(cities))
-  var button = document.createElement("button");
-  button.addEventListener("click",function(){
-    getCurrentWeather(city)
-  })
-}
+function addHistoryItem(city) {
+  if (city && !cities.includes(city)) {
+    cities.push(city);
+    localStorage.setItem("history", JSON.stringify(cities));
+    var button = document.createElement("button");
+    button.addEventListener("click", function () {
+      getCurrentWeather(city);
+    });
+  }
 }
 
 function getWeather(weather) {
   console.log(weather);
-
+  currentWeatherEl.innerHTML = "";
   // create h2 for name of city
   var cityName = document.createElement("h2");
   cityName.textContent = weather.name;
   currentWeatherEl.append(cityName);
-  // create <p> for humidity, wind,description, temp, 
+  // create <p> for humidity, wind,description, temp,
   var temp = document.createElement("p");
   temp.textContent = "Temp: " + weather.main.temp + " F";
   currentWeatherEl.append(temp);
@@ -49,20 +48,20 @@ function getWeather(weather) {
   currentWeatherEl.append(humidity);
 
   var wind = document.createElement("p");
-  wind.textContent =
-    "wind: " + weather.wind.speed + "mph";
+  wind.textContent = "wind: " + weather.wind.speed + "mph";
   currentWeatherEl.append(wind);
 }
-function getCurrentWeather(city){
-  var APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${APIkey}`; 
+function getCurrentWeather(city) {
+  var APIUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${APIkey}`;
+
   fetch(APIUrl)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      getWeather(data)
-      getFivedayForecast(city)
-      addHistoryItem()
-    })      
+      getWeather(data);
+      getFivedayForecast(city);
+      addHistoryItem();
+    });
 }
 var CityConditions = [];
 
@@ -74,25 +73,25 @@ function getFivedayForecast(city) {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      
-      
-    
-    var forecasts = ""
-    for(let i=0;i<data.list.length;i=i+8){
-      var forecast = data.list[i]
-      forecasts += `
+
+      var forecasts = "";
+      for (let i = 0; i < data.list.length; i = i + 8) {
+        var forecast = data.list[i];
+        forecasts += `
         <div class="card" style="width: 18rem;">
-  <img src="http://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png" class="card-img-top" alt="icon">
+  <img src="http://openweathermap.org/img/w/${
+    data.list[i].weather[0].icon
+  }.png" class="card-img-top" alt="icon">
   <div class="card-body">
-    <h5 class="card-title">${forecast.dt_txt.slice(0,10)}</h5>
+    <h5 class="card-title">${forecast.dt_txt.slice(0, 10)}</h5>
     <p class="card-text">humidity: ${forecast.main.humidity}</p>
     <p class="card-text">wind: ${forecast.wind.speed}</p>
     <p class="card-text">temp: ${forecast.main.temp}</p>
   </div>
 </div>
-        `
-    }
-     forecastEl.innerHTML = forecasts;
+        `;
+      }
+      forecastEl.innerHTML = forecasts;
       // forecasts.forEach((forecast) => {
       //   var listItemTemp = document.createElement("li");
       //   listItemTemp.textContent = forecast.temperature;
@@ -106,14 +105,14 @@ function getFivedayForecast(city) {
       //   var listItemHumidity = document.createElement("li");
       //   listItemHumidity.textContent = forecast.dateHumidity;
 
-        // forecastEl.appendChild(listItemDate);
-        // forecastEl.appendChild(listItemTemp);
-        // forecastEl.appendChild(listItemWind);
-        // forecastEl.appendChild(listItemHumidity);
-    //  });
+      // forecastEl.appendChild(listItemDate);
+      // forecastEl.appendChild(listItemTemp);
+      // forecastEl.appendChild(listItemWind);
+      // forecastEl.appendChild(listItemHumidity);
+      //  });
 
       searchHistory.push(city);
-
+      historyEl.innerHTML = "";
       searchHistory.forEach((city) => {
         var listItem = document.createElement("li");
         listItem.textContent = city;
@@ -122,23 +121,20 @@ function getFivedayForecast(city) {
       });
     });
 
-    function temperature(valNum) {
-      valNum = parseFloat(valNum);
-      return ((valNum-273.15)*1.8)+32;
+  function temperature(valNum) {
+    valNum = parseFloat(valNum);
+    return (valNum - 273.15) * 1.8 + 32;
 
-      // console.log(temperature);
-    }
-
+    // console.log(temperature);
+  }
 }
-function SaveDataToLocalStorage(data)
-{
-    var a = [];
-        a = JSON.parse(localStorage.getItem('session')) || [];
-        a.push(data);
-        alert(a);  
-    localStorage.setItem('session', JSON.stringify(a));
+function SaveDataToLocalStorage(data) {
+  var a = [];
+  a = JSON.parse(localStorage.getItem("session")) || [];
+  a.push(data);
+  alert(a);
+  localStorage.setItem("session", JSON.stringify(a));
 }
-
 
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -176,15 +172,17 @@ function startPage() {
     weatherCardEl.appendChild(listElement);
   }
 }
-//when the user clicks btn current city; use Jquery here
 
-  $(document).on("click", ".list-weatherCardEL-item", function (event) {
+document.querySelector("#history").addEventListener("click", function (event) {
   event.preventDefault();
 
   var city = $(this).attr("attr");
   returnApiFetch(city);
 });
 
-function resetBtn() {
-  document.getElementById("resetBtn").reset();
-}
+document.getElementById("resetBtn").addEventListener("click", function () {
+  historyEl.innerHTML = "";
+  localStorage.clear();
+  searchHistory = [];
+  cities = [];
+});
