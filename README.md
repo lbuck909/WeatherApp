@@ -1,4 +1,6 @@
 # Weather Dashboard
+# Description
+This application will allow any user a chance to check the five day forecast within a city search. The app will display the wind speed, humidity, and temperature for the desired city.
 *** User Story**
 AS A traveler
 I WANT to see the weather outlook for multiple cities
@@ -19,3 +21,8 @@ THEN I am again presented with current and future conditions for that city
 Uses the OpenWeather API to retrieve weather data
 
 Uses localStorage to store persistent data
+
+# License
+MIT License used
+
+
